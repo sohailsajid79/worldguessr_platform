@@ -5,5 +5,6 @@ terraform {
     storage_account_name = "stworldguessrtf37cgic"
     container_name       = "tfstate"
     key                  = "bootstrap.tfstate"
+    use_azuread_auth     = true
   }
 }
