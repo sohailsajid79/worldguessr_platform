@@ -17,3 +17,7 @@ output "github_client_id" {
 output "tenant_id" {
   value = data.azurerm_client_config.current.tenant_id
 }
+
+output "dev_resource_group" {
+  value = azurerm_resource_group.dev.name
+}

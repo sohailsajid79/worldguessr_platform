@@ -1,4 +1,8 @@
-variable "subscription_id" {
+variable "bootstrap_subscription_id" {
+  type = string
+}
+
+variable "online_subscription_id" {
   type = string
 }
 
@@ -14,7 +18,7 @@ variable "location" {
 
 variable "github_repo" {
   type    = string
-  default = "sohailsajid79/worldguessr-platform"
+  default = "sohailsajid79/worldguessr_platform"
 }
 
 variable "github_owner_id" {

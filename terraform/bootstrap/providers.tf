@@ -21,5 +21,11 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id = var.subscription_id
+  subscription_id = var.bootstrap_subscription_id
+}
+
+provider "azurerm" {
+  alias = "online"
+  features {}
+  subscription_id = var.online_subscription_id
 }

@@ -1,5 +1,5 @@
 gh_owner: sohailsajid79
-gh_repo: worldguessr-platform
+gh_repo: worldguessr_platform
 gh_pat: "{{ vault_gh_pat }}"
 runner_user: runner
 runner_dir: /home/runner/actions-runner
