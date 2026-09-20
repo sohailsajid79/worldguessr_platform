@@ -3,7 +3,6 @@ upstream/
 
 # secrets & local env
 .env
-*.tfvars
 !*.example.tfvars
 
 # terraform
