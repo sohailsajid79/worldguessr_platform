@@ -1,0 +1,39 @@
+name: infra-destroy
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "d" to Destroy'
+        required: true
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: infra-dev
+  cancel-in-progress: false
+
+env:
+  ARM_USE_OIDC: "true"
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+jobs:
+  destroy:
+    if: github.event.inputs.confirm == 'd'
+    runs-on: [self-hosted, arm64]
+    defaults:
+      run:
+        working-directory: terraform/envs/dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.6"
+          terraform_wrapper: false
+
+      - run: terraform init -input=false
+      - run: terraform destroy -input=false -auto-approve
