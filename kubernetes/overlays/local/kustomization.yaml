@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: worldguessr
+resources:
+  - ../../base
+  - mongo/deployment.yaml
+  - mongo/service.yaml
+  - mongo/pvc.yaml
+configMapGenerator:
+  - name: app-config
+    literals:
+      - NODE_ENV=production
+      - MONGODB=mongodb://mongo:27017/worldguessr
+      - REDIS_URI=redis://redis:6379
+secretGenerator:
+  - name: app-secrets
+    envs:
+      - secrets.env
+images:
+  - name: worldguessr-api
+    newTag: local
