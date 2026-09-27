@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cron
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: cron
+  template:
+    metadata:
+      labels:
+        app: cron
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: cron
+          image: worldguessr-cron
+          ports:
+            - containerPort: 3003
+          envFrom:
+            - configMapRef:
+                name: app-config
+          startupProbe:
+            httpGet:
+              path: /allCountries.json
+              port: 3003
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /allCountries.json
+              port: 3003
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3003
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              memory: 4Gi

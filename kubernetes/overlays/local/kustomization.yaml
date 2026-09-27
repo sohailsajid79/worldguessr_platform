@@ -19,3 +19,9 @@ secretGenerator:
 images:
   - name: worldguessr-api
     newTag: local
+  - name: worldguessr-auth
+    newTag: local
+  - name: worldguessr-ws
+    newTag: local
+  - name: worldguessr-cron
+    newTag: local

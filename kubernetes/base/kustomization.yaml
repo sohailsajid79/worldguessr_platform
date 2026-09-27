@@ -5,3 +5,11 @@ resources:
   - redis/service.yaml
   - api/deployment.yaml
   - api/service.yaml
+  - auth/deployment.yaml
+  - auth/service.yaml
+  - ws/deployment.yaml
+  - ws/service.yaml
+  - ws/pvc.yaml
+  - ws/pdb.yaml
+  - cron/deployment.yaml
+  - cron/service.yaml

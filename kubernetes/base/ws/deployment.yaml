@@ -1,45 +1,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api
+  name: ws
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
-      app: api
+      app: ws
   template:
     metadata:
       labels:
-        app: api
+        app: ws
     spec:
       enableServiceLinks: false
+      securityContext:
+        fsGroup: 1000
       containers:
-        - name: api
-          image: worldguessr-api
+        - name: ws
+          image: worldguessr-ws
           ports:
-            - containerPort: 3001
+            - containerPort: 3002
           envFrom:
             - configMapRef:
                 name: app-config
-            - secretRef:
-                name: app-secrets
+          volumeMounts:
+            - name: state
+              mountPath: /tmp
           readinessProbe:
             httpGet:
               path: /
-              port: 3001
+              port: 3002
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
-              port: 3001
+              port: 3002
             initialDelaySeconds: 20
             periodSeconds: 20
           resources:
             requests:
-              cpu: 100m
-              memory: 384Mi
+              cpu: 200m
+              memory: 512Mi
             limits:
-              memory: 768Mi
+              memory: 1Gi
         - name: cron-proxy
           image: alpine/socat:1.8.0.0
           args: ["TCP-LISTEN:3003,fork,reuseaddr", "TCP:cron:3003"]
@@ -49,3 +54,7 @@ spec:
               memory: 16Mi
             limits:
               memory: 32Mi
+      volumes:
+        - name: state
+          persistentVolumeClaim:
+            claimName: ws-state
